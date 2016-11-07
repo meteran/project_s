@@ -18,8 +18,8 @@ do you want add your ssh kyes to remote server?(y/n): n
 avaiable addresses:
 my_alias            user@remote_address
 [local]$ s my_alias
-user@remote_address's password: 
-[user@remote_address's]$ logout
+user@remote_address password: 
+[user@remote_address]$ logout
 [local]$ s rm my_alias
 [local]$ s ls
 avaiable addresses:
@@ -30,7 +30,7 @@ do you want add your ssh kyes to remote server?(y/n): n
 /usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/user/.ssh/id_rsa.pub"
 /usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
 /usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
-user@remote_address's password:
+user@remote_address password:
 
 Number of key(s) added: 1
 
@@ -44,7 +44,7 @@ do you want add your ssh kyes to remote server?(y/n): y
 /usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/user/.ssh/id_rsa.pub"
 /usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
 /usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
-user2@remote_address's password:
+user2@remote_address password:
 
 Number of key(s) added: 1
 
