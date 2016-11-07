@@ -1,4 +1,4 @@
-# Project S contain program `s` to store and manage the ssh sessions.
+# Project S contains program `s` to store and manage the ssh sessions.
 
 
 ## Installation:
