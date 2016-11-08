@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys, subprocess
+import sys, subprocess, argparse
 from os.path import expanduser
 
 
@@ -23,26 +23,30 @@ def sessions():
     finally:
         return ssh
 
-def run(name):
+def save(ssh_sessions):
+    f = open(path, 'w+')
+    f.write('\n'.join(["{}={}".format(*x) for x in ssh_sessions.items()]))
+    f.close()
+
+def run(arguments):
+    name = arguments['session_name']
     ssh_sessions = sessions()
     if name in ssh_sessions.keys():
         subprocess.call("ssh {}".format(ssh_sessions[name]), shell=True)
     else:
         print("there is no ssh session with name '{}'".format(name))
 
-def save(ssh_sessions):
-    f = open(path, 'w+')
-    f.write('\n'.join(["{}={}".format(*x) for x in ssh_sessions.items()]))
-    f.close()
-
-def cp(name):
+def cp(arguments):
+    name = arguments['session_name']
     ssh_sessions = sessions()
     if name in ssh_sessions.keys():
         subprocess.call("ssh-copy-id {}".format(ssh_sessions[name]), shell=True)
     else:
         print("there is no ssh session with name '{}'".format(name))
 
-def add(name, address):
+def add(arguments):
+    name = arguments['session_name']
+    address = arguments['address']
     ssh_sessions = sessions()
     if name in ssh_sessions.keys():
         if raw_input("address with name '{}' already exists, do you want override it?(y/n): ").lower() not in  ['y', 'yes']:
@@ -54,12 +58,13 @@ def add(name, address):
     if raw_input("do you want add your ssh kyes to remote server?(y/n): ").lower() in ['y', 'yes']:
         cp(name)
 
-def ls():
+def ls(arguments):
     print('avaiable addresses:')
     for name, address in sessions().items():
         print("{:<20}{}".format(name, address))
 
-def rm(name):
+def rm(arguments):
+    name = arguments['session_name']
     ssh_sessions = sessions()
     if name in ssh_sessions.keys():
         del ssh_sessions[name]
@@ -67,29 +72,44 @@ def rm(name):
         print('address removed')
 
 
-
-commands = {'ls': ls, 
+commands = {'ls': ls,
+            'run': run, 
             'add': add, 
             'rm': rm,
             'cp': cp
             }
 
-def main(argv):
-    if len(argv) < 2:
-        print(usage)
-        return
-    command = argv[1]
-    if command not in commands.keys():
-        return run(command)
-    else:
-        commands[command](*argv[2:])
-    #except:
-    #    print(usage)
+
+def main():
+    parser = argparse.ArgumentParser(description='Manage ssh sessions and keys')
+    subparsers = parser.add_subparsers(title='commands', dest='command')
+
+    parser_run = subparsers.add_parser('run', help='accessing session')
+    parser_run.add_argument('session_name', help='session name to host') 
+
+    parser_ls = subparsers.add_parser('ls', help='listing sessions')
+
+    parser_add = subparsers.add_parser('add', help='adding session')
+    parser_add.add_argument('session_name', help='session name to host') 
+    parser_add.add_argument('address', help='login and address of remote host') 
+
+    parser_rm = subparsers.add_parser('rm', help='removing session')
+    parser_rm.add_argument('session_name', help='session to be removed') 
+
+    parser_cp = subparsers.add_parser('cp', help='copying ssh keys')
+    parser_cp.add_argument('session_name', help='session to be copied') 
+
+    args = parser.parse_args()
+
+    try:
+        commands[args.command](vars(args))
+    except:
+       parser.print_usage()
 
 
 if __name__ == '__main__':
     try:
-        main(sys.argv)
+        main()
     except KeyboardInterrupt:
         pass
 
