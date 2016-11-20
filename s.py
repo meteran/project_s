@@ -90,6 +90,7 @@ commands = {'ls': ls,
 def main():
     parser = argparse.ArgumentParser(description='Manage ssh sessions and keys')
     subparsers = parser.add_subparsers(title='commands', dest='command')
+    subparsers.required = True
 
     parser_run = subparsers.add_parser('run', help='accessing session')
     parser_run.add_argument('session_name', help='session name to host')
