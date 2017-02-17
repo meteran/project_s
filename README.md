@@ -17,7 +17,7 @@ do you want add your ssh kyes to remote server?(y/n): n
 [local]$ s ls
 avaiable addresses:
 my_alias            user@remote_address
-[local]$ s my_alias
+[local]$ s run my_alias
 user@remote_address password: 
 [user@remote_address]$ logout
 [local]$ s rm my_alias
@@ -36,7 +36,7 @@ Number of key(s) added: 1
 
 Now try logging into the machine, with:   "ssh 'user@remote_address'"
 and check to make sure that only the key(s) you wanted were added.
-[local]$ s my_alias
+[local]$ s run my_alias
 [user@remote_address]$ logout
 [local]$ s add my_alias2 user2@remote_address
 address saved
@@ -50,7 +50,7 @@ Number of key(s) added: 1
 
 Now try logging into the machine, with:   "ssh 'user2@remote_address'"
 and check to make sure that only the key(s) you wanted were added.
-[local]$ s my_alias2
+[local]$ s run my_alias2
 [user2@remote_address]$ logout
 [local]$ 
 ```
